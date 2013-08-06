@@ -9,8 +9,91 @@
 
         <link rel="stylesheet" href="styles/index.css"/>
         <link rel="stylesheet" href="styles/jquery.mobile-1.2.0.css"/>
+        
+    	<title>Geolocation Test</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTG-8">
+		<script type="text/javascript" language="Javascript" src="https://untappd.s3.amazonaws.com/mobile/assets/js/geo.js"></script>
+		<script type="text/javascript" language="Javascript">
+		function start()
+		{
+			if(geo_position_js.init()){
+				geo_position_js.getCurrentPosition(onSuccess,onError);
+			}
+			else if (navigator.geolocation) {
+	            navigator.geolocation.getCurrentPosition(onSuccess, onError)
+	        }
+			else
+			{
+				var content = document.getElementById("content");
+				
+				content.innerHTML("Geolocation is not enabled on your browser");
+			}
+		}
+		
+		function onSuccess(position){
+			
+			var content = document.getElementById("content");        
+
+		    var message = "";
+			
+			
+			var lat = position.coords.latitude;
+			var lng = position.coords.longitude;
+			
+			content.innerHTML = "Your latitude is: <strong>" +lat +"</strong> and your longitude is: <strong>"+lng+"</strong>";
+			
+			
+		}
+		
+		function onError(error){
+
+		    var content = document.getElementById("content");        
+
+		    var message = "";
+
+
+
+		    switch (error.code) {
+
+		        case 0:
+
+		            message = "Something went wrong: " + error.message;
+
+		            break;
+
+		        case 1:
+
+		            message = "You denied permission to this page to retrieve a location.";
+
+		            break;
+
+		        case 2:
+
+		            message = "The browser was unable to determine a location: " + error.message;
+
+		            break;
+
+		        case 3:
+
+		            message = "The browser timed out before retrieving the location.";
+
+		            break;
+
+		    }
+
+
+
+		    content.innerHTML = message;
+
+		}
+
+
+		
+		
+		
+		</script>
     </head>
-    <body>
+    <body onload="start();">
         
         <!-- JQM seems to need this in the page even though we don't use it -->
         <div data-role="page"></div>
@@ -21,10 +104,22 @@
         <!-- Add your site or application content here -->
 
         <!-- Ideally require would load this also, but couldn't come up with a way to do so -->
-        <script type="text/javascript" src="scripts/libs/cordova-2.2.0.js"></script>
+        <script type="text/javascript" src="scripts/geo.js"></script>
         
         <!-- build:js scripts/amd-app.js -->
         <script data-main="scripts/config" src="scripts/libs/require/require.js"></script>
-        <!-- endbuild -->
+        
+        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+	
+		<div id="content">
+
+		</div>
+
+
+
     </body>
 </html>
